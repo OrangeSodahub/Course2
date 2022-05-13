@@ -1,5 +1,5 @@
 """
-在test测试集里选取300个图片进行测试,计算准确率
+Caculate the accuracy using test dataset
 """
 import torch
 from torch.utils.data import DataLoader as DataLoader
@@ -9,13 +9,13 @@ from model import AlexNet
 from model import AnimalDataSet as ADS
 
 # Load train_model
-net = torch.load(r"net/Animal10_AlexNet03.pkl")
+net = torch.load(r"/home/zonlin/ML/Course/Course2/pkl/AlexNet_epoch10_batch200.pkl")
 # Parameter
 BATCH_SIZE = 50
-dataset_dir = r"F:/PersonalFiles/CourseMaterials/大二下/机器学习/Animals-10/test"
+dataset_dir = r"/home/zonlin/ML/Course/Course2/Animals-10/test/"
 
 # Testset
-datafile = ADS("test",dataset_dir)
+datafile = ADS("test", dataset_dir)
 dataloader = DataLoader(datafile, batch_size=BATCH_SIZE,shuffle=True)
 acc_pre = 0
 count = 0
@@ -28,10 +28,9 @@ for img,label in dataloader:
     count += 1
     img = img.cuda()
     out = net(img)
-    pred = torch.max(out, 1)[1].cpu().numpy().squeeze()  # torch.max[0]是值 [1]是index\n",
+    pred = torch.max(out, 1)[1].cpu().numpy().squeeze()
     for i in pred:
-        # print(pred[i],end = ',')
-        # print(label[i][0].cpu().numpy())
+        # pred[i] is prediction and label[i][0] is the truth
         if(pred[i] == label[i][0].cpu().numpy()):
             acc_pre += 1
 

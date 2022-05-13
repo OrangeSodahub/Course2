@@ -2,4 +2,5 @@
 *train/
 *test/
 *raw_img/
+*.pkl
 *.docx

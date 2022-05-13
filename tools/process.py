@@ -4,21 +4,18 @@ import random
 import shutil
 import translate
 
-# F:\PersonalFiles\CourseMaterials\大二下\机器学习\Animals-10
-
 # resize
 def image_tailor(input_dir, out_dir):
     for root, dirs, files in os.walk(input_dir):
         for file in files:
-            # file为root目录中的文件
-            filepath = os.path.join(root, file)  # 连接两个或更多的路径名组件，filepath路径为/root/file
+            filepath = os.path.join(root, file)
             
             try:
-                image = cv2.imread(filepath)  # 根据输入路径读取照片
-                dim = (227, 227)  # 裁剪的尺寸
-                resized = cv2.resize(image, dim)  # 按比例将原图缩放成227*227
-                path = os.path.join(out_dir, file)  # 保存的路径和相应的文件名
-                cv2.imwrite(path, resized)  # 进行保存
+                image = cv2.imread(filepath)
+                dim = (227, 227)
+                resized = cv2.resize(image, dim)
+                path = os.path.join(out_dir, file)
+                cv2.imwrite(path, resized)
             except:
                 print(filepath)
                 os.remove(filepath)
@@ -40,7 +37,7 @@ def image_rename(input_dir,name_start):
         else:
             continue
         pass
-    print(str(count - 1) + " files have created.")
+    print(str(count - 1) + " files have renamed.")
 
 
 # merge
@@ -64,7 +61,7 @@ def files_merge(old_path, new_path):
 # split train and test dataset
 def move_image(dirpath, destdir):
     fs = os.listdir(dirpath)
-    random.shuffle(fs)     # 随机将文件目录整理
+    random.shuffle(fs) # random files
     le = int(len(fs)*0.2)
 
     for f in fs[0:le]:
@@ -74,17 +71,17 @@ def move_image(dirpath, destdir):
 if __name__ == '__main__':
     # preprocess
     # rename
-    # for i in range(10):
-    #     in_dir = os.path.join("F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/raw-img/",translate.num[i])
-    #     image_rename(in_dir, translate.translate[translate.num[i]])
+    for i in range(10):
+        in_dir = os.path.join("F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/raw-img/",translate.num[i])
+        image_rename(in_dir, translate.translate[translate.num[i]])
 
     # merge
-    # files_merge("F:F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/raw-img/","F:F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/train/")
+    files_merge("F:F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/raw-img/","F:F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/train/")
 
     # split
-    # dirpath = r"F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/train"
-    # destdir = r"F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/test"
-    # move_image(dirpath, destdir)
+    dirpath = r"F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/train"
+    destdir = r"F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/test"
+    move_image(dirpath, destdir)
 
     # resize
     input_dir = r"F:/PersonalFiles/CodeWorks/Python/AlexNet/Course2/Animals-10/train/"
