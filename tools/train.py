@@ -3,24 +3,26 @@ import argparse
 import torch
 from torch.autograd import Variable
 from torch.utils.data import DataLoader as DataLoader
+from tensorboard_logger import Logger
 import time
 from model import AlexNet
 from model import AnimalDataSet as ADS
 
-def train(dir: str):
+def train(dataset_dir: str, BATCH_SIZE: int, Epoch: int):
     # Create a new Alexnet: net
     net = AlexNet(10)
     net = net.cuda()
 
     # Parameters
     LR = 0.001
-    Epoch = 10
-    BATCH_SIZE = 200
-    dataset_dir = dir
 
     # Trainset
     datafile = ADS("train", dataset_dir) # mode, dataset_dir
     dataloader = DataLoader(datafile, batch_size=BATCH_SIZE, shuffle=True)
+    print(len(dataloader))
+
+    # Logger
+    logger = Logger(logdir="/home/zonlin/ML/Course/Course2/log", flush_secs=10)
 
     # Train
     start_time = time.time()
@@ -41,6 +43,7 @@ def train(dir: str):
 
             if(cnt % 5 == 0):
                 print('Epoch {0}, Frame {1}, train_loss {2}'.format(step, cnt * BATCH_SIZE, loss / BATCH_SIZE))
+            logger.log_value('loss', loss / BATCH_SIZE, cnt * BATCH_SIZE)
 
     end_time = time.time()
 
@@ -51,14 +54,16 @@ def train(dir: str):
     to_dir = '/home/zonlin/ML/Course/Course2/pkl/'
     name = 'AlexNet_epoch'+str(Epoch)+'_batch'+str(BATCH_SIZE)+'.pkl'
     torch.save(net, os.path.join(to_dir, name))
-    print(name, 'has been saved to ', to_dir)
+    print(name, 'has been saved to', to_dir)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--dir", help="path to train dataset", required=False, default="/home/zonlin/ML/Course/Course2/Animals-10/resize_train/")
+    parser.add_argument("--batch_size", help="batch_size", required=False, default=20)
+    parser.add_argument("--epoch", help="epoch", required=False, default=200)
     params = parser.parse_args()
     
     if os.path.exists(params.dir):
-        train(params.dir)
+        train(params.dir, params.batch_size, params.epoch)
     else:
         print("No such directory: ", params.dir)
