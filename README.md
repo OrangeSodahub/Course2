@@ -43,8 +43,3 @@ python tools/pred.py --img_dir
 ```
 
 ## Pretrained Model
-
-## Loss Curve
-```bash
-tensorboard --logdir '/path/to/logdir/'
-```

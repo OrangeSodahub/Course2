@@ -52,6 +52,7 @@ def train(dataset_dir: str, BATCH_SIZE: int, Epoch: int):
 
     # Save train_model
     to_dir = '/home/zonlin/ML/Course/Course2/pkl/'
+    os.makedirs(to_dir,exist_ok=True)
     name = 'AlexNet_epoch'+str(Epoch)+'_batch'+str(BATCH_SIZE)+'.pkl'
     torch.save(net, os.path.join(to_dir, name))
     print(name, 'has been saved to', to_dir)
