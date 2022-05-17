@@ -78,12 +78,6 @@ class AnimalDataSet(Data.Dataset):
                     if(name[0] == self.labels[i]):
                         self.list_label.append(i)
                         break
-
-        elif self.mode == "classification":    # classifier
-            for file in os.listdir(dir):
-                self.list_img.append(dir + file)
-                self.data_size += 1
-
         else:
             print('Undefined Dataset!')
 
@@ -107,14 +101,7 @@ class AnimalDataSet(Data.Dataset):
 
             label = self.list_label[item]
             return self.transform(img),torch.LongTensor([label])
-
-        # Classify mode
-        elif self.mode == "classification":
-            img = cv2.imread(self.list_img[item])
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            newsize = (227, 227)
-            img = cv2.resize(img, newsize)
-            return self.transform(img) # no labels
+            
         else:
             print('None')
             
